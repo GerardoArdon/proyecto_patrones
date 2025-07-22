@@ -1,0 +1,7 @@
+{
+    "bonus": {
+      "salaried_percentage": 0.10,
+      "hourly_bonus_amount": 100,
+      "hourly_threshold": 160
+    }
+  }  
