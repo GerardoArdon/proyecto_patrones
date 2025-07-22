@@ -28,3 +28,6 @@ class Company:
                 print("  Sin transacciones registradas.")
             for t in emp.transactions:
                 print(f"  {t.date} | {t.operation} | ${t.amount:.2f} | {t.description}")
+
+    def list_employees(self):
+        return self.employees

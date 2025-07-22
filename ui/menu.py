@@ -18,7 +18,8 @@ class EmployeeManagementMenu:
             print("2. Pay employees")
             print("3. Grant vacation / payout")
             print("4. View transaction history")
-            print("5. Exit")
+            print("5. View employees")  
+            print("6. Exit")  
 
             option = input("Select an option: ")
 
@@ -31,6 +32,8 @@ class EmployeeManagementMenu:
             elif option == "4":
                 self.company.view_transaction_history()
             elif option == "5":
+                self.view_employees()  
+            elif option == "6":
                 print("Exiting system. Goodbye!")
                 break
             else:
@@ -79,7 +82,16 @@ class EmployeeManagementMenu:
             print(f"\n✅ {result}")
 
         except Exception as e:
-            print(f"⚠️ Error: {e}")
+            print(f"Error: {e}")
 
     def view_transaction_history(self):
         self.company.view_transaction_history()
+
+    def view_employees(self):  
+        if not self.company.employees:
+            print("\nNo employees registered.")
+        else:
+            print("\n--- Registered Employees ---")
+            for emp in self.company.employees:
+                print(f"{emp.name} ({emp.role}) - {emp.vacation_days} vacation days remaining")
+        input("Press Enter to continue...")
