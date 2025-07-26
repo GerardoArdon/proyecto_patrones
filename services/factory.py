@@ -12,7 +12,6 @@ class EmployeeFactory:
         emp_type = data["type"]
         role = data.get("role", "").lower()
 
-        # Crear copia del diccionario y eliminar la clave 'type'
         data_clean = data.copy()
         data_clean.pop("type", None)
 
@@ -27,7 +26,6 @@ class EmployeeFactory:
         else:
             raise ValueError("Tipo de empleado inválido.")
 
-        # Asignar política de vacaciones según el rol
         if role == "intern":
             employee.vacation_policy = InternVacationPolicy()
         elif role == "manager":

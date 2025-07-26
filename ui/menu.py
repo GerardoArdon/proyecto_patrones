@@ -2,6 +2,13 @@ import json
 from services.company import Company
 from services.factory import EmployeeFactory
 from core.strategies.bonus_policy import BonusPolicy
+from core.strategies.vacation_policy import (
+    ManagerVacationPolicy,
+    VicePresidentVacationPolicy,
+    InternVacationPolicy,
+    DefaultVacationPolicy,
+    VacationPolicy
+)
 
 
 class EmployeeManagementMenu:
@@ -18,8 +25,8 @@ class EmployeeManagementMenu:
             print("2. Pay employees")
             print("3. Grant vacation / payout")
             print("4. View transaction history")
-            print("5. View employees")  
-            print("6. Exit")  
+            print("5. View employees")
+            print("6. Exit")
 
             option = input("Select an option: ")
 
@@ -32,7 +39,7 @@ class EmployeeManagementMenu:
             elif option == "4":
                 self.company.view_transaction_history()
             elif option == "5":
-                self.view_employees()  
+                self.view_employees()
             elif option == "6":
                 print("Exiting system. Goodbye!")
                 break
@@ -60,6 +67,21 @@ class EmployeeManagementMenu:
                 data["projects"].append({"name": project_name, "amount": amount})
 
         employee = EmployeeFactory.create_employee(data)
+
+        if emp_type == "intern" or role == "intern":
+            employee.vacation_policy = InternVacationPolicy()
+        elif role == "manager":
+            employee.vacation_policy = ManagerVacationPolicy()
+        elif role == "vice_president":
+            employee.vacation_policy = VicePresidentVacationPolicy()
+        elif emp_type == "freelancer":
+            class NoVacationPolicy(VacationPolicy):
+                def request_vacation(self, employee, days_requested, payout):
+                    raise PermissionError("❌ Freelancers no tienen derecho a vacaciones/payout.")
+            employee.vacation_policy = NoVacationPolicy()
+        else:
+            employee.vacation_policy = DefaultVacationPolicy()
+
         self.company.add_employee(employee)
         print(f"\nEmployee {employee.name} created successfully.")
 
@@ -87,7 +109,7 @@ class EmployeeManagementMenu:
     def view_transaction_history(self):
         self.company.view_transaction_history()
 
-    def view_employees(self):  
+    def view_employees(self):
         if not self.company.employees:
             print("\nNo employees registered.")
         else:

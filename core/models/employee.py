@@ -9,7 +9,7 @@ class Employee(ABC):
     role: str
     vacation_days: int = 25
     transactions: List[TransactionLog] = field(default_factory=list)
-    vacation_policy = None  # Política inyectada dinámicamente
+    vacation_policy = None  
 
     @abstractmethod
     def calculate_payment(self, bonus_policy) -> float:
